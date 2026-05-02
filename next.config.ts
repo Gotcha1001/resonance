@@ -5,9 +5,9 @@ const nextConfig: NextConfig = {
   experimental: {
     proxyClientMaxBodySize: "20mb",
   },
-  serverExternalPackages: ["ffmpeg-static", "@prisma/client", "prisma"],
+  serverExternalPackages: ["ffmpeg-static"],
   outputFileTracingIncludes: {
-    "/**": ["./src/generated/prisma/**/*"], // <-- ADD THIS
+    "/**": ["./src/generated/prisma/**/*", "./node_modules/.prisma/**/*"],
   },
 };
 
