@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "src/app/api/**": {
+      "includeFiles": "src/generated/prisma/**"
+    },
+    "src/app/(dashboard)/**": {
+      "includeFiles": "src/generated/prisma/**"
+    }
+  }
+}

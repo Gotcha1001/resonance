@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages: ["ffmpeg-static"],
   outputFileTracingIncludes: {
-    "/**": ["./src/generated/prisma/**/*", "./node_modules/.prisma/**/*"],
+    "/**": ["./src/generated/prisma/**"],
   },
 };
 
