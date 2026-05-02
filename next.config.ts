@@ -2,11 +2,13 @@ import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   experimental: {
     proxyClientMaxBodySize: "20mb",
   },
   serverExternalPackages: ["ffmpeg-static", "@prisma/client", "prisma"],
+  outputFileTracingIncludes: {
+    "/**": ["./src/generated/prisma/**/*"], // <-- ADD THIS
+  },
 };
 
 export default withSentryConfig(nextConfig, {
