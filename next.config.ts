@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   experimental: {
     proxyClientMaxBodySize: "20mb",
   },
-  serverExternalPackages: ["ffmpeg-static"],
+  serverExternalPackages: ["ffmpeg-static", "@prisma/client", "prisma"],
 };
 
 export default withSentryConfig(nextConfig, {
