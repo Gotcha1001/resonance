@@ -167,7 +167,7 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { chatterbox } from "@/lib/chatterbox-client";
 import { prisma } from "@/lib/db";
-import { uploadAudio } from "@/lib/r2";
+import { deleteAudio, uploadAudio } from "@/lib/r2";
 import { TEXT_MAX_LENGTH } from "@/features/text-to-speech/data/constants";
 import { createTRPCRouter, orgProcedure } from "../init";
 import { polar } from "@/lib/polar";
@@ -407,5 +407,27 @@ export const generationsRouter = createTRPCRouter({
 
       console.log("[generations.create] DONE, returning id:", generationId);
       return { id: generationId };
+    }),
+
+  delete: orgProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const generation = await prisma.generation.findUnique({
+        where: { id: input.id, orgId: ctx.orgId },
+      });
+
+      if (!generation) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+
+      if (generation.r2ObjectKey) {
+        await deleteAudio(generation.r2ObjectKey).catch(() => {});
+      }
+
+      await prisma.generation.delete({
+        where: { id: input.id },
+      });
+
+      return { success: true };
     }),
 });
