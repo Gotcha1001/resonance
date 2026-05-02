@@ -394,6 +394,20 @@ const MIN_AUDIO_DURATION_SECONDS = 10;
 
 async function convertToWav(inputBuffer: Buffer): Promise<Buffer> {
   const ffmpegPath = process.env.FFMPEG_PATH;
+
+  // Temporary debug - remove after fixing
+  const { existsSync } = await import("fs");
+  const pathsToCheck = [
+    "/var/task/node_modules/ffmpeg-static/ffmpeg",
+    "/var/task/node_modules/.bin/ffmpeg",
+    "/tmp/ffmpeg",
+    ffmpegPath ?? "no-env-set",
+  ];
+  console.log(
+    "Checking ffmpeg paths:",
+    pathsToCheck.map((p) => `${p}: ${existsSync(p)}`).join(" | "),
+  );
+
   if (!ffmpegPath) throw new Error("FFMPEG_PATH not configured");
 
   const id = randomUUID();
@@ -404,7 +418,7 @@ async function convertToWav(inputBuffer: Buffer): Promise<Buffer> {
 
   await new Promise<void>((resolve, reject) => {
     execFile(
-      ffmpegPath, // <-- uses env var directly
+      ffmpegPath,
       [
         "-y",
         "-i",
